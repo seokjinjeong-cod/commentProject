@@ -53,15 +53,36 @@ public class CommentServlet extends HttpServlet {
 			
 			dao.insertComment(comment);
 			
-			System.out.println(gson.toJson(comment));
+//			System.out.println(gson.toJson(comment));
 			
 			out.println(gson.toJson(comment));
 			
 		} else if(cmd.equals("mod")){
 			System.out.println("<h1>수정페이지입니다.</h1>");
+			String id = request.getParameter("id");
+			String name = request.getParameter("name");
+			String content = request.getParameter("content");
+			
+			Comment comment = new Comment();
+			comment.setId(id);
+			comment.setName(name);
+			comment.setContent(content);
+			
+			dao.updateComment(comment);
+			
+			out.println(gson.toJson(comment));
 			
 		} else if(cmd.equals("del")){
 			System.out.println("<h1>삭제페이지입니다.</h1>");
+			String id = request.getParameter("id");
+			
+			if(dao.deleteComment(id) == null) {
+				// {"retCode":"fail"}
+				out.println("{\"retCode\":\"fail\"}");
+				return;
+			} 
+			
+			out.println("{\"retCode\":\"success\"}");
 			
 		} else {
 			System.out.println("<h1>" + cmd + "</h1>");

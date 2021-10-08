@@ -86,12 +86,68 @@ public class CommentDAO extends DAO {
 	}
 
 	// 글수정..
-	public void updateComment() {
-
+	public Comment updateComment(Comment comment) {
+		connect();
+		String sql = "update comments set name=?, content=? where id=?";
+		try {
+			psmt = conn.prepareStatement(sql);
+			psmt.setString(1, comment.getName());
+			psmt.setString(2, comment.getContent());
+			psmt.setString(3, comment.getId());
+			int r = psmt.executeUpdate();
+			System.out.println(r + "건 변경.");
+			
+			return comment;
+			
+		} catch (SQLException e) {
+			e.printStackTrace();
+			return null;
+		} finally {
+			disconnect();
+		}
 	}
 
 	// 글삭제..
-	public void deleteComment() {
-
+	public String deleteComment(String id) {
+		connect();
+		try {
+			psmt = conn.prepareStatement("delete from comments where id = ?");
+			psmt.setString(1, id);
+			int r = psmt.executeUpdate();
+			System.out.println(r + "건 삭제.");
+			
+			return id;
+			
+		} catch (SQLException e) {
+			e.printStackTrace();
+			return null;
+		} finally {
+			disconnect();
+		}
+		
 	}
 }
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
