@@ -1,0 +1,43 @@
+<!DOCTYPE html>
+<html>
+<head>
+<meta charset="UTF-8">
+<title>글목록페이지</title>
+<style></style>
+<script>
+	window.onload = function() {
+		loadCommentList();
+	}
+	// 목록조회하는 함수.
+	function loadCommentList() {
+		let xhtp = new XMLHttpRequest();
+		xhtp.onload = function() {
+			console.log(xhtp.responseText);
+		}
+		xhtp.open('get', '../CommentServlet?cmd=list');
+		xhtp.send();
+	}
+</script>
+</head>
+<body>
+	<h5>comment/comment.html</h5>
+	<div id='commentList'></div>
+	<!-- 글등록화면 -->
+	<div id='commentAdd'>
+		<form action='' name='addForm'>
+			이름: <input type='text' name='name' size='10px'><br> 내용:
+			<textarea name='content' cols='20' rows='2'></textarea>
+			<br> <input type='button' value='등록' onclick='addComment()'>
+		</form>
+	</div>
+	<!-- 글수정화면 -->
+	<div id='commentUpdate' style='display: none'>
+		<form action='' name='updateForm'>
+			이름: <input type='text' name='name' size='10px'><br> 내용:
+			<textarea name='content' cols='20' rows='2'></textarea>
+			<br> <input type='button' value='변경' onclick='updateComment()'>
+			<input type='button' value='취소' onclick='deleteComment()'>
+		</form>
+	</div>
+</body>
+</html>
