@@ -12,16 +12,64 @@
 	function loadCommentList() {
 		let xhtp = new XMLHttpRequest();
 		xhtp.onload = function() {
+			let listDiv = document.getElementById('commentList');
 			console.log(xhtp.responseText);
+			let data = JSON.parse(xhtp.responseText);
+			console.log(data);
+			for(let i = 0; i < data.length; i++){
+				let commentDiv = makeCommentView(data[i]); //{id:?, name:?, content:?}
+				listDiv.appendChild(commentDiv);
+			}
 		}
 		xhtp.open('get', '../CommentServlet?cmd=list');
 		xhtp.send();
+	}
+	function makeCommentView(comment) {
+		let div = document.createElement('div');
+		div.setAttribute('id', comment.id);
+		div.setAttribute('class', 'commnet');
+		
+		let str = '<strong>' + comment.name + '</strong>' + comment.content
+					+ '<input type="button" value="수정" onclick="viewUpdateFrom()">'
+					+ '<input type="button" value="삭제" onclick="confirmDeletion()">';
+		div.innerHTML = str;
+		
+		return div;
+	}
+	// 등록 ajax
+	function addComment() {
+		let name = document.addForm.name.value;
+		let content = document.addForm.content.value;
+		// console.log(name);
+		// console.log(content);
+		if(name == "") {
+			window.alert('이름을 입력하세요.');
+			document.addForm.name.focus();
+			return;
+		} 
+		if(content == "") {
+			window.alert('내용을 입력하세요.');
+			document.addForm.content.focus();
+			return;
+		}
+
+		let xhtp = new XMLHttpRequest();
+		xhtp.onload = function() {
+			let data = JSON.parse(xhtp.responseText);
+			console.log(data);
+			let commentDiv = makeCommentView(data);
+			document.getElementById('commentList').appendChild(commentDiv);
+		}
+		xhtp.open('post', '../CommentServlet');
+		xhtp.setRequestHeader("Content-type", "application/x-www-form-urlencoded");
+		xhtp.send("name=" + name + "&content=" + content + '&cmd=add');
 	}
 </script>
 </head>
 <body>
 	<h5>comment/comment.html</h5>
 	<div id='commentList'></div>
+	<hr>
 	<!-- 글등록화면 -->
 	<div id='commentAdd'>
 		<form action='' name='addForm'>
