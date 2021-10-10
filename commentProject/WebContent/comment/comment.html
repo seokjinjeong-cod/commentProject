@@ -59,6 +59,7 @@
 	// 등록 ajax
 	function addComment() {
 		let name = document.addForm.name.value;
+		console.log(name);
 		let content = document.addForm.content.value;
 		// console.log(name);
 		// console.log(content);
@@ -79,6 +80,7 @@
 			console.log(data);
 			let commentDiv = makeCommentView(data);
 			document.getElementById('commentList').appendChild(commentDiv);
+			console.log('1111');
 		}
 		xhtp.open('post', '../CommentServlet');
 		xhtp.setRequestHeader("Content-type", "application/x-www-form-urlencoded");

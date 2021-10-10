@@ -56,6 +56,7 @@ public class CommentDAO extends DAO {
 				currId = rs.getInt("value");
 			}
 			currId++;
+			
 			psmt = conn.prepareStatement("insert into comments values(?,?,?)");
 			psmt.setInt(1, currId);
 			psmt.setString(2, comment.getName());
@@ -68,7 +69,6 @@ public class CommentDAO extends DAO {
 			r = psmt.executeUpdate();
 			System.out.println(r + "건 변경.");
 			
-			conn.commit();
 			comment.setId(String.valueOf(currId));
 			return comment;
 			
