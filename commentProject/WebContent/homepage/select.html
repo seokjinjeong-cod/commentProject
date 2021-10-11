@@ -1,0 +1,47 @@
+<!DOCTYPE html>
+<html lang="en">
+
+<head>
+    <meta charset="UTF-8">
+    <meta http-equiv="X-UA-Compatible" content="IE=edge">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Document</title>
+</head>
+
+<body>
+    <button>ok</button>
+    <script>
+        function Person(first, last, age, eye) {
+            this.firstName = first;
+            this.lastName = last;
+            this.age = age;
+            this.eyeColor = eye;
+            this.name = function() {
+                return this.firstName + ',' + this.lastName;
+            }
+        }
+
+        Person.prototype.gender = 'male';
+        const son = new Person('민주', '홍', 3, '검정');
+        const daughter = new Person('민주', '홍', 3, '검정');
+        daughter.gender = "female";
+
+        console.log(son. age, son.gender, son.name());
+        console.log(daughter.age, daughter.gender, daughter.name());
+
+        class Persons {
+            constructor(firstName, lastName, age) {
+                this.firstName = firstName;
+                this.lastName = lastName;
+                this.age = age;
+            }
+            showName() {
+                return this.firstName + ',' + this.lastName;
+            }
+        }
+        let lee = new Persons('순신', '이', 30);
+        console.log(lee.showName());
+    </script>
+</body>
+
+</html>
