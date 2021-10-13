@@ -9,7 +9,11 @@
     <script src="https://ajax.googleapis.com/ajax/libs/jquery/3.6.0/jquery.min.js"></script>
     <script>
         $(document).ready(function () {
-            $('button').click(findFnc);
+            $('button').eq(0).click(findFnc);
+            $('button').eq(1).click(function() {
+                // console.log($('input:checked').parent());
+                $('input:checked').parent().parent().remove(); // 체크라인삭제
+            });
 
         });
 
@@ -55,7 +59,7 @@
 
 <body>
     <div id="show"></div>
-    <button>클릭</button>
+    <button>클릭</button><button>삭제</button>
     <script>
         fetch('coffee.json')
             .then(x => x.json())
