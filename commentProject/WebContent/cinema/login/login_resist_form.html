@@ -3,11 +3,17 @@
 <head>
 <meta charset="UTF-8">
 <title>Welcome to Daegu Cinema</title>
+<link rel="preconnect" href="https://fonts.googleapis.com">
+<link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+<link href="https://fonts.googleapis.com/css2?family=Jua&display=swap"
+	rel="stylesheet">
 <link rel="stylesheet" href="style.css">
 </head>
 <body>
 	<div class="wrap">
-		<div class="title"><h2>Daegu Cinema</h2></div>
+		<div class="title">
+			<h2>Daegu Cinema</h2>
+		</div>
 		<div class="form-wrap">
 			<div class="button-wrap">
 				<div id="btn"></div>
@@ -40,22 +46,21 @@
 		</div>
 	</div>
 	<script>
-            var x = document.getElementById("login");
-            var y = document.getElementById("register");
-            var z = document.getElementById("btn");
-            
-            
-            function login(){
-                x.style.left = "50px";
-                y.style.left = "450px";
-                z.style.left = "0";
-            }
+		var x = document.getElementById("login");
+		var y = document.getElementById("register");
+		var z = document.getElementById("btn");
 
-            function register(){
-                x.style.left = "-400px";
-                y.style.left = "50px";
-                z.style.left = "110px";
-            }
-        </script>
+		function login() {
+			x.style.left = "50px";
+			y.style.left = "450px";
+			z.style.left = "0";
+		}
+
+		function register() {
+			x.style.left = "-400px";
+			y.style.left = "50px";
+			z.style.left = "110px";
+		}
+	</script>
 </body>
 </html>
