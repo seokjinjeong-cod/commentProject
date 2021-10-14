@@ -1,0 +1,30 @@
+<!DOCTYPE html>
+<html>
+<head>
+<meta charset="UTF-8">
+<title>apiData/sample2.html</title>
+<script src="../jquery/jquery-3.6.0.min.js"></script>
+</head>
+<body>
+	<script>
+	$.ajax({
+		url: "https://api.odcloud.kr/api/15077586/v1/centers?page=1&perPage=10&serviceKey=Q5%2FkGV%2FODcKC%2FT8IOS7rqJ7d%2Bi4UgXaDoWAimoPfNu%2FtPDiJEGI00k9D5IAKfk%2BIyHg791us%2FcRg4rQpmE5n5A%3D%3D",
+        dataType: 'json',
+        success: function(result) {
+            console.log(result);
+            let table = $('<table border="1" />');
+            $('body').append(table);
+            let items = $(result).find('body>items>item');
+            for(let i = 0; i < items.length; i++) {
+            	let item = $(items).eq(i); // <item><acc></acc><dec></dec></item>
+                $(table).append(createRow(item));
+            	console.log('검사수:', $(item).find('examCnt').html(),
+            				'확진자수:', $(item).find('decideCnt').html(),
+            				'사망자수:', $(item).find('deathCnt').html());
+            	//console.log('확진자수:' + $(items).eq(i).children().eq(7).html());
+            }
+        }
+    });
+	</script>
+</body>
+</html>
