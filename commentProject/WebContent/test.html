@@ -1,0 +1,110 @@
+<!DOCTYPE html>
+<html lang="en">
+
+<head>
+  <meta charset="UTF-8">
+  <meta http-equiv="X-UA-Compatible" content="IE=edge">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>Document</title>
+</head>
+
+<body>
+  <section id='movieUp'>
+    상영시작일 : <input type="date" id='startdate'><br>
+    상영종료일 : <input type="date" id='enddate'><br>
+    제목 : <input type="text" id='title'><br>
+    상영관 : <input type="text" id='location'><br>
+    포스터 : <input type='file' name='file'><br>
+    <!-- <select id="time">
+      <option value="1">09:00</option>
+      <option value="2">12:00</option>
+      <option value="3">15:00</option>
+      <option value="4">18:00</option> -->
+    <button onclick=movieInfo(event)>등록</button>
+    </select>
+    <div id="show"></div>
+
+  </section>
+
+  <script>
+    //무비인포
+    function movieInfo(e){
+      let startDate=e.target.parentNode.querySelector('#startdate').value;
+      let endDate=e.target.parentNode.querySelector('#enddate').value;
+      let title=e.target.parentNode.querySelector('#title').value;
+      let location=e.target.parentNode.querySelector('#location').value;
+      console.log(startDate,endDate,title,location);
+
+      let season=movieDate(startDate,endDate);
+      // console.log(seasonInfo);
+      for(let i =0 ;i<season.length;i++){
+        console.log(season[i]);
+        let cinema=document.createElement("div");
+        cinema.id='"'+title+','+season[i]+','+location+'"';//+title+",'+season[i]+','"+location+
+        let divShow=document.getElementById('show');
+        divShow.appendChild(cinema);
+        seatMake(title,season[i],location);
+        
+      }
+      window.alert('등록완료');
+    }
+    //상영날짜등록
+    function movieDate(start,end) {
+      const endDate = new Date(end);
+      const startDate = new Date(start);
+      let season=[];
+      let minus = endDate.getDate() - startDate.getDate();
+      
+      let saveDate = new Date(start);
+      for (let i = 0; i <= minus; i++) {
+        // (new Date(saveDate.setDate(startDate.getDate() + i)).toLocaleString());
+        saveDate.setDate(startDate.getDate() + i);
+        season.push(String(saveDate));
+
+      }
+      return season;
+    }
+
+    // 좌석 테이블등록
+    function seatMake(title,season,location){
+      let table = document.createElement('table');
+      table.setAttribute('border', '1px');
+      table.style.textAlign = 'center';
+      table.style.width = '500px';
+      table.style.height = '400px';
+      // table.style.display = 'none';
+      let tbody = document.createElement('tbody');
+      let tr;
+      tr = document.createElement('tr');
+      for (let i = 1; i <= 80; i++) {
+        let td = document.createElement('td');
+        td.setAttribute('onclick', 'seatSelect(event)');
+        td.onclick='seatSelect(event)';
+  
+        td.innerHTML = i;
+        td.id = 'seat' + i;
+        if (i % 10 != 0) {
+          tr.appendChild(td);
+  
+        } else {
+          tr.appendChild(td);
+          tr = document.createElement('tr');
+        }
+        tbody.appendChild(tr);
+      }
+      table.appendChild(tbody);
+      let div = document.getElementById('"'+title+','+season+','+location+'"');
+      div.appendChild(table);
+  
+      function seatSelect(e) {
+        let tdTar = e.target;
+        console.log(tdTar)
+        tdTar.style.backgroundColor = 'red';
+  
+      }
+
+    }
+  </script>
+</body>
+
+</html>
