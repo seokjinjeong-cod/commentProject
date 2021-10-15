@@ -1,30 +1,114 @@
 <!DOCTYPE html>
 <html>
+
 <head>
-<meta charset="UTF-8">
-<title>apiData/sample2.html</title>
-<script src="../jquery/jquery-3.6.0.min.js"></script>
-</head>
-<body>
-	<script>
-	$.ajax({
-		url: "https://api.odcloud.kr/api/15077586/v1/centers?page=1&perPage=10&serviceKey=Q5%2FkGV%2FODcKC%2FT8IOS7rqJ7d%2Bi4UgXaDoWAimoPfNu%2FtPDiJEGI00k9D5IAKfk%2BIyHg791us%2FcRg4rQpmE5n5A%3D%3D",
-        dataType: 'json',
-        success: function(result) {
-            console.log(result);
-            let table = $('<table border="1" />');
-            $('body').append(table);
-            let items = $(result).find('body>items>item');
-            for(let i = 0; i < items.length; i++) {
-            	let item = $(items).eq(i); // <item><acc></acc><dec></dec></item>
-                $(table).append(createRow(item));
-            	console.log('검사수:', $(item).find('examCnt').html(),
-            				'확진자수:', $(item).find('decideCnt').html(),
-            				'사망자수:', $(item).find('deathCnt').html());
-            	//console.log('확진자수:' + $(items).eq(i).children().eq(7).html());
-            }
+    <meta charset="UTF-8">
+    <title>apiData/sample2.html</title>
+    <script src="../jquery/jquery-3.6.0.min.js"></script>
+    <style>
+        #city>div {
+            display: inline-block;
+            margin: 2px;
         }
-    });
-	</script>
+
+        #city>div.active>button {
+            background-color: rgb(75, 75, 66);
+            color: white;
+            font-weight: bold;
+        }
+    </style>
+</head>
+
+<body>
+    <div id="city"></div>
+    <div id="show"></div>
+
+    <script>
+        let categories = [{
+                code: '서울',
+                city: '서울특별시'
+            },
+            {
+                code: '대전',
+                city: '대전광역시'
+            },
+            {
+                code: '대구',
+                city: '대구광역시'
+            },
+            {
+                code: '울산',
+                city: '울산광역시'
+            },
+            {
+                code: '부산',
+                city: '부산광역시'
+            }
+        ];
+
+        for (let category of categories) {
+            let div = $('<div />').addClass('city');
+            $(div).html('<button onclick="chooseCity(\'' + category.city + '\')" >' + category.code + '</button>');
+            $('#city').append(div);
+        }
+
+        function chooseCity(cityName) {
+            $('#city>.city').removeClass('active');
+
+            $(event.target).parent().addClass('active');
+
+            // cityName: 서울특별시
+            let selectedCities = $.grep(cities, function (obj) {
+                return obj.sido === cityName;
+            })
+
+            $('#show').empty(); // 기존데이터를 지우고...
+
+            let table, tbody, tr, td;
+            table = $('<table />').attr('border', '1');
+            $(table).html(
+                '<thead><tr><th>id</th><th>centerName</th><th>sido</th><th>facilityName</th><th>link</th></tr></thead>'
+            );
+
+            // td영역을 그리기
+            $.each(selectedCities, function (idx, obj) {
+                $(table).append(makeDiv(obj));
+            })
+
+            $('#show').append(table); // 화면에 display
+        }
+
+        function makeDiv(row) {
+            let div = $('<tr />').append(
+                $('<td />').html(row.id),
+                $('<td />').html(row.centerName),
+                $('<td />').html(row.sido),
+                $('<td />').html(row.facilityName),
+                //$('<td />').html('<a href="daum_map.jsp?fN=' + row.facilityName + '" target="_blank">지도</a>'),
+                $('<td />').html('<a href="daum_map.jsp?x=' + row.lat + '&y=' + row.lng +  '&fN=' + row.facilityName + '" target="_blank">지도</a>')
+            );
+            return div;
+        }
+
+        // api데이터 -> cities 배열에 저장.
+        let cities = [];
+        $.ajax({
+            url: '../SampleDataServlet2',
+            dataType: 'json',
+            type: 'get',
+            success: function (result) {
+                console.log(result);
+                let data = result.data;
+                for (let datum of data) {
+                    cities.push(datum);
+                }
+                chooseCity('서울특별시');
+            },
+            error: function (reject) {
+                console.log(reject);
+            }
+        });
+    </script>
 </body>
+
 </html>
